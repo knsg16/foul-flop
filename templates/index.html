@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Foul or Flop</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Football Foul or Flop Predictor</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert cockpit-alert mb-4">
+                    <div class="alert-label">System Message</div>
+                    <div class="alert-message">{{ messages[0] }}</div>
+                </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="card rounded-card"> <!-- クラスを追加 -->
+                <div class="card-header bg-dark text-white rounded-card-header">Upload Video</div> <!-- クラスを追加 -->
+                <div class="card-body rounded-card-body"> <!-- クラスを追加 -->
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="video" name="video" required>
+                        <label class="custom-file-label" for="video">Choose file</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form action="/clear_session" method="post">
+                                <button type="submit" class="btn btn-danger btn-block rounded-btn">Clear Session</button> <!-- クラスを追加 -->
+                            </form>
+                        </div>
+                        <div class="col">
+                            <form action="/" method="post" enctype="multipart/form-data">
+                                <button type="submit" class="btn btn-primary btn-block rounded-btn">Predict</button> <!-- クラスを追加 -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            {% if video_path %}
+            <div class="mt-4">
+              <video class="w-100" controls autoplay muted loop>
+                <source src="{{ video_path }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Handling file input label name -->
+<script>
+    $('#video').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
+    });
+</script>
+
+</body>
+</html>
+
+<style>
+    .rounded-card {
+        border-radius: 50px; /* 丸みを大きくする */
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    }
+
+    .rounded-card .card-header {
+        border-top-left-radius: 50px;  /* 丸みを大きくする */
+        border-top-right-radius: 50px;  /* 丸みを大きくする */
+        background-color: #343a40;  /* より明示的な色を指定 */
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .rounded-card .card-body {
+        border-bottom-left-radius: 50px;  /* 丸みを大きくする */
+        border-bottom-right-radius: 50px;  /* 丸みを大きくする */
+    }
+
+    .rounded-btn {
+        border-radius: 50px;  /* 丸みを大きくする */
+        padding: 12px 20px;  /* パディングを調整 */
+    }
+
+    /* 追加の装飾やアニメーション */
+    .rounded-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* ホバー時の影を追加 */
+    }
+
+    .rounded-btn:hover {
+        background-color: #007bff; /* ホバー時の背景色を明るく */
+        color: white;  /* ホバー時の文字色 */
+    }
+    .cockpit-alert {
+        background: #343a40; /* Dark background */
+        color: #fff; /* White text */
+        padding: 20px;
+        border-radius: 50px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.5rem;
+    }
+
+    .alert-label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .alert-message {
+        flex-grow: 1;
+        text-align: center;
+    }
+    
+</style>
+
